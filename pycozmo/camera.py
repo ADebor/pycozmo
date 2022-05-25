@@ -128,6 +128,7 @@ def mini_to_jpeg_helper(mini, width, height, header):
     buffer_out[0x5f] = height & 0xff
     buffer_out[0x60] = width >> 8
     buffer_out[0x61] = width & 0xff
+    
     # Remove padding at the end
     while buffer_in[curr_len - 1] == 0xff:
         curr_len -= 1
@@ -144,4 +145,10 @@ def mini_to_jpeg_helper(mini, width, height, header):
     off += 1
     buffer_out[off] = 0xD9
 
-    return np.asarray(buffer_out)
+    # Remove zero padding at the end of file
+    padding_mask = np.ones(len(buffer_out), dtype=bool)
+    off += 1
+    padding_mask[off:] = False
+
+    return buffer_out[padding_mask]
+    #return np.asarray(buffer_out)
