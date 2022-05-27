@@ -572,6 +572,13 @@ class Client(event.Dispatcher):
         pkt = protocol_encoder.SetRobotVolume(level=level)
         self.conn.send(pkt)
 
+    ### test ###
+    def set_camera_params(self, gain: float = 0.0, exposure_ms: int = 0, auto_exposure_enabled: bool = False) -> None:
+        pkt = protocol_encoder.SetCameraParams(gain=gain, exposure_ms=exposure_ms, auto_exposure_enabled=auto_exposure_enabled)
+        self.conn.send(pkt)
+    ### test ###
+
+
     def play_audio(self, fspec: str) -> None:
         pkts = audio.load_wav(fspec)
         self.anim_controller.play_audio(pkts)
